@@ -48,7 +48,7 @@ describe('crud controllers', () => {
 
       const req = {
         params: {
-          id: _mongoose.default.Types.ObjectIdj()
+          id: _mongoose.default.Types.ObjectId()
         },
         user: {
           _id: user

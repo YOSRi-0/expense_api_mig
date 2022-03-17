@@ -13,7 +13,8 @@ describe('List model', () => {
       expect(name).toEqual({
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        enum: ['expense', 'income']
       });
     });
     test('createdBy', () => {

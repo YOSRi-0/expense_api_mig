@@ -61,5 +61,8 @@
       "dist/"
     ],
     "restoreMocks": true
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0"
   }
 }

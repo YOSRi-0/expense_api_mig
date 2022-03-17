@@ -30,23 +30,23 @@ describe('Item model', () => {
       required: true,
       trim: true,
     })
+  })
 
-    test('createdBy', () => {
-      const createdBy = Item.schema.obj.createdBy
-      expect(createdBy).toEqual({
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: 'user',
-        required: true,
-      })
+  test('createdBy', () => {
+    const createdBy = Item.schema.obj.createdBy
+    expect(createdBy).toEqual({
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'user',
+      required: true,
     })
+  })
 
-    test('list', () => {
-      const list = Item.schema.obj.list
-      expect(list).toEqual({
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: 'list',
-        required: true,
-      })
+  test('list', () => {
+    const list = Item.schema.obj.list
+    expect(list).toEqual({
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'list',
+      required: true,
     })
   })
 })

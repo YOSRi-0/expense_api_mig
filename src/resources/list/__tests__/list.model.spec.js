@@ -9,6 +9,7 @@ describe('List model', () => {
         type: String,
         required: true,
         trim: true,
+        enum: ['expense', 'income'],
       })
     })
 

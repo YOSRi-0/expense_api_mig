@@ -14,7 +14,7 @@ const itemSchema = new _mongoose.default.Schema({
     type: String,
     required: true,
     trim: true,
-    maxlength: 20
+    maxLength: 20
   },
   amount: {
     type: Number,
