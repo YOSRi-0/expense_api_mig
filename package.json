@@ -7,7 +7,8 @@
     "build": "babel src --out-dir dist",
     "test": "jest --forceExit --detectOpenHandles --silent",
     "test-controllers": "npm run test -t controller",
-    "test-model": "npm run test -t model",
+    "test-models": "npm run test -t model",
+    "test-routes": "npm run test -t router",
     "dev": "nodemon --exec npm run restart",
     "restart": "rimraf dist && npm run build && npm run start",
     "start": "node dist/index.js"
