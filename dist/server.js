@@ -23,6 +23,8 @@ var _list = _interopRequireDefault(require("./resources/list/list.router"));
 
 var _user = _interopRequireDefault(require("./resources/user/user.router"));
 
+var _auth = require("./utils/auth");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const app = (0, _express.default)();
@@ -33,6 +35,8 @@ app.use((0, _bodyParser.urlencoded)({
   extended: true
 }));
 app.use((0, _morgan.default)('dev'));
+app.post('/signup', _auth.signUp);
+app.post('/signin', _auth.signIn);
 app.use('/api/item', _item.default);
 app.use('/api/list', _list.default);
 app.use('/api/user', _user.default);

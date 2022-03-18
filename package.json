@@ -9,6 +9,7 @@
     "test-controllers": "npm run test -t controller",
     "test-models": "npm run test -t model",
     "test-routes": "npm run test -t router",
+    "test-auth": "npm run test -t auth",
     "dev": "nodemon --exec npm run restart",
     "restart": "rimraf dist && npm run build && npm run start",
     "start": "node dist/index.js"
@@ -56,9 +57,11 @@
   },
   "jest": {
     "verbose": true,
-    "tesURL": "testURL",
+    "testURL": "http://localhost",
     "testEnvironment": "node",
-    "setupTestFrameworkScriptFile": "<rootDir>/test-db-setup.js",
+    "setupFilesAfterEnv": [
+      "<rootDir>/test-db-setup.js"
+    ],
     "testPathIgnorePatterns": [
       "dist/"
     ],
