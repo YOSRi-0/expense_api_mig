@@ -17,6 +17,12 @@ var _config = _interopRequireDefault(require("./config"));
 
 var _db = require("./utils/db");
 
+var _item = _interopRequireDefault(require("./resources/item/item.router"));
+
+var _list = _interopRequireDefault(require("./resources/list/list.router"));
+
+var _user = _interopRequireDefault(require("./resources/user/user.router"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const app = (0, _express.default)();
@@ -27,6 +33,9 @@ app.use((0, _bodyParser.urlencoded)({
   extended: true
 }));
 app.use((0, _morgan.default)('dev'));
+app.use('/api/item', _item.default);
+app.use('/api/list', _list.default);
+app.use('/api/user', _user.default);
 
 const start = async () => {
   try {

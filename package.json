@@ -24,6 +24,7 @@
     "babel-core": "^6.26.3",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^27.5.1",
+    "babel-cli": "^6.26.0",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.2",
     "cors": "^2.8.5",
@@ -55,15 +56,12 @@
   },
   "jest": {
     "verbose": true,
-    "tesURL": "http://localhost/",
+    "tesURL": "testURL",
     "testEnvironment": "node",
     "setupTestFrameworkScriptFile": "<rootDir>/test-db-setup.js",
-    "testPathIgnorePatters": [
+    "testPathIgnorePatterns": [
       "dist/"
     ],
     "restoreMocks": true
-  },
-  "devDependencies": {
-    "babel-cli": "^6.26.0"
   }
 }
