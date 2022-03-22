@@ -37,6 +37,7 @@ app.use((0, _bodyParser.urlencoded)({
 app.use((0, _morgan.default)('dev'));
 app.post('/signup', _auth.signUp);
 app.post('/signin', _auth.signIn);
+app.use('/api', _auth.protect);
 app.use('/api/item', _item.default);
 app.use('/api/list', _list.default);
 app.use('/api/user', _user.default);

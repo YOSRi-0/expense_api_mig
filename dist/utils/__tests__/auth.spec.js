@@ -112,6 +112,7 @@ describe('Authentication', () => {
       const res = {
         status(status) {
           expect(status).toBe(401);
+          return this;
         },
 
         send(result) {
@@ -145,6 +146,90 @@ describe('Authentication', () => {
 
       };
       await (0, _auth.signIn)(req, res);
+    });
+  });
+  describe('protect', () => {
+    test('look for bearer token in header', async () => {
+      expect.assertions(2);
+      const req = {
+        headers: {}
+      };
+      const res = {
+        status(status) {
+          expect(status).toBe(401);
+          return this;
+        },
+
+        end() {
+          expect(true).toBe(true);
+        }
+
+      };
+      await (0, _auth.protect)(req, res);
+    });
+    test('token must have correct prefix', async () => {
+      expect.assertions(2);
+      const req = {
+        headers: {
+          authorization: (0, _auth.newToken)({
+            id: '232FZF'
+          })
+        }
+      };
+      const res = {
+        status(status) {
+          expect(status).toBe(401);
+          return this;
+        },
+
+        end() {
+          expect(true).toBe(true);
+        }
+
+      };
+      await (0, _auth.protect)(req, res);
+    });
+    test('must be a real user', async () => {
+      expect.assertions(2);
+      const token = `Bearer ${(0, _auth.newToken)({
+        id: _mongoose.default.Types.ObjectId()
+      })}`;
+      const req = {
+        headers: {
+          authorization: token
+        }
+      };
+      const res = {
+        status(status) {
+          expect(status).toBe(401);
+          return this;
+        },
+
+        end() {
+          expect(true).toBe(true);
+        }
+
+      };
+      await (0, _auth.protect)(req, res);
+    });
+    test('find user from token and passes on', async () => {
+      expect.assertions(2);
+      const user = await _user.User.create({
+        email: 'hello@gmail.com',
+        password: '123456'
+      });
+      const token = `Bearer ${(0, _auth.newToken)(user)}`;
+      const req = {
+        headers: {
+          authorization: token
+        }
+      };
+
+      const next = () => {};
+
+      await (0, _auth.protect)(req, {}, next);
+      expect(req.user._id.toString()).toBe(user._id.toString());
+      expect(req.user).not.toHaveProperty('password');
     });
   });
 });

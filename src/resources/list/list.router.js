@@ -1,17 +1,14 @@
 import { Router } from 'express'
+import crudControllers from './list.controller'
 
 const router = Router()
 
-const mockController = async (req, res) => {
-  return res.send('router working')
-}
-
-router.route('/').get(mockController).post(mockController)
+router.route('/').get(crudControllers.getMany).post(crudControllers.createOne)
 
 router
   .route('/:id')
-  .get(mockController)
-  .put(mockController)
-  .delete(mockController)
+  .get(crudControllers.getOne)
+  .put(crudControllers.updateOne)
+  .delete(crudControllers.removeOne)
 
 export default router

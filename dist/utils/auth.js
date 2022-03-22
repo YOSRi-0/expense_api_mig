@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.verifyToken = exports.signUp = exports.signIn = exports.newToken = void 0;
+exports.verifyToken = exports.signUp = exports.signIn = exports.protect = exports.newToken = void 0;
 
 var _config = _interopRequireDefault(require("../config"));
 
@@ -47,12 +47,12 @@ const signUp = async (req, res) => {
   try {
     const user = await _user.User.create(newUser);
     const token = newToken(user);
-    res.status(201).send({
+    return res.status(201).send({
       token
     });
   } catch (e) {
     console.error(e);
-    res.status(500).end();
+    return res.status(500).end();
   }
 };
 
@@ -84,17 +84,42 @@ const signIn = async (req, res) => {
       return res.status(401).send(invalid);
     }
 
-    const token = newToken(user); // const { id: userId } = await verifyToken(token)
-    // const u = await User.findById(userId)
-    // console.log(u)
-
-    res.status(201).send({
+    const token = newToken(user);
+    return res.status(201).send({
       token
     });
   } catch (e) {
     console.error(e);
-    res.status(500).end();
+    return res.status(500).end();
   }
 };
 
 exports.signIn = signIn;
+
+const protect = async (req, res, next) => {
+  const bearer = req.headers.authorization;
+
+  if (!bearer || !bearer.startsWith('Bearer ')) {
+    return res.status(401).end();
+  }
+
+  const token = bearer.split('Bearer ')[1].trim();
+  let payload;
+
+  try {
+    payload = await verifyToken(token);
+  } catch (e) {
+    return res.status(401).end();
+  }
+
+  const user = await _user.User.findById(payload.id).select('-password').lean().exec();
+
+  if (!user) {
+    return res.status(401).end();
+  }
+
+  req.user = user;
+  next();
+};
+
+exports.protect = protect;
