@@ -11,6 +11,8 @@ var _user = require("../resources/user/user.model");
 
 var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
 
+var _types = require("./types");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const newToken = user => {
@@ -46,9 +48,12 @@ const signUp = async (req, res) => {
 
   try {
     const user = await _user.User.create(newUser);
+    const types = await (0, _types.createTypes)(user);
     const token = newToken(user);
     return res.status(201).send({
-      token
+      token,
+      email: user.email,
+      types
     });
   } catch (e) {
     console.error(e);
@@ -84,9 +89,13 @@ const signIn = async (req, res) => {
       return res.status(401).send(invalid);
     }
 
+    const types = await (0, _types.getTypes)(user._id);
+    console.log(types);
     const token = newToken(user);
     return res.status(201).send({
-      token
+      token,
+      email: user.email,
+      types
     });
   } catch (e) {
     console.error(e);

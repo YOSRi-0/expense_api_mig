@@ -1,6 +1,7 @@
 import config from '../config'
 import { User } from '../resources/user/user.model'
 import jwt from 'jsonwebtoken'
+import { createTypes, getTypes } from './types'
 
 export const newToken = (user) => {
   return jwt.sign({ id: user.id }, config.secrets.jwt, {
@@ -25,8 +26,9 @@ export const signUp = async (req, res) => {
 
   try {
     const user = await User.create(newUser)
+    const types = await createTypes(user)
     const token = newToken(user)
-    return res.status(201).send({ token })
+    return res.status(201).send({ token, email: user.email, types })
   } catch (e) {
     console.error(e)
     return res.status(500).end()
@@ -55,8 +57,10 @@ export const signIn = async (req, res) => {
       return res.status(401).send(invalid)
     }
 
+    const types = await getTypes(user._id)
+    console.log(types)
     const token = newToken(user)
-    return res.status(201).send({ token })
+    return res.status(201).send({ token, email: user.email, types })
   } catch (e) {
     console.error(e)
     return res.status(500).end()

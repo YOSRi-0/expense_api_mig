@@ -25,7 +25,7 @@ const listSchema = new _mongoose.default.Schema({
   timestamps: true
 });
 listSchema.index({
-  user: 1,
+  createdBy: 1,
   name: 1
 }, {
   unique: true
