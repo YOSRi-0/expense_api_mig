@@ -35,13 +35,14 @@ const verifyToken = token => new Promise((resolve, reject) => {
 exports.verifyToken = verifyToken;
 
 const signUp = async (req, res) => {
-  if (!req.body.email || !req.body.password) {
+  if (!req.body.username || !req.body.email || !req.body.password) {
     return res.status(400).send({
-      message: 'need email and password'
+      message: 'need username, email and password'
     });
   }
 
   const newUser = {
+    username: req.body.username,
     email: req.body.email,
     password: req.body.password
   };
@@ -52,11 +53,21 @@ const signUp = async (req, res) => {
     const token = newToken(user);
     return res.status(201).send({
       token,
+      username: user.username,
       email: user.email,
       types
     });
   } catch (e) {
     console.error(e);
+
+    if (e.keyPattern?.email === 1) {
+      console.log('send my error');
+      res.status(400).send({
+        message: 'Email is already in use'
+      });
+      return;
+    }
+
     return res.status(500).end();
   }
 };
@@ -90,15 +101,14 @@ const signIn = async (req, res) => {
     }
 
     const types = await (0, _types.getTypes)(user._id);
-    console.log(types);
     const token = newToken(user);
     return res.status(201).send({
       token,
+      username: user.username,
       email: user.email,
       types
     });
   } catch (e) {
-    console.error(e);
     return res.status(500).end();
   }
 };

@@ -14,6 +14,12 @@ var _lodash = require("lodash");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const userSchema = new _mongoose.default.Schema({
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true
+  },
   email: {
     type: String,
     required: true,

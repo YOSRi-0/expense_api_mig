@@ -18,19 +18,32 @@ export const verifyToken = (token) =>
   })
 
 export const signUp = async (req, res) => {
-  if (!req.body.email || !req.body.password) {
-    return res.status(400).send({ message: 'need email and password' })
+  if (!req.body.username || !req.body.email || !req.body.password) {
+    return res
+      .status(400)
+      .send({ message: 'need username, email and password' })
   }
 
-  const newUser = { email: req.body.email, password: req.body.password }
+  const newUser = {
+    username: req.body.username,
+    email: req.body.email,
+    password: req.body.password,
+  }
 
   try {
     const user = await User.create(newUser)
     const types = await createTypes(user)
     const token = newToken(user)
-    return res.status(201).send({ token, email: user.email, types })
+    return res
+      .status(201)
+      .send({ token, username: user.username, email: user.email, types })
   } catch (e) {
     console.error(e)
+    if (e.keyPattern?.email === 1) {
+      console.log('send my error')
+      res.status(400).send({ message: 'Email is already in use' })
+      return
+    }
     return res.status(500).end()
   }
 }
@@ -58,11 +71,11 @@ export const signIn = async (req, res) => {
     }
 
     const types = await getTypes(user._id)
-    console.log(types)
     const token = newToken(user)
-    return res.status(201).send({ token, email: user.email, types })
+    return res
+      .status(201)
+      .send({ token, username: user.username, email: user.email, types })
   } catch (e) {
-    console.error(e)
     return res.status(500).end()
   }
 }
