@@ -44,10 +44,11 @@ app.use('/api/user', _user.default);
 
 const start = async () => {
   try {
-    await (0, _db.connect)();
-    app.listen(_config.default.port, () => {
-      console.log(`Server running on http://localhost:${_config.default.port}/api`);
-    });
+    await (0, _db.connect)(); // app.listen(config.port, () => {
+    //   console.log(`Server running on http://localhost:${config.port}/api`)
+    // })
+
+    app.listen(_config.default.port);
   } catch (e) {
     console.error(e);
   }

@@ -27,9 +27,10 @@ app.use('/api/user', userRouter)
 export const start = async () => {
   try {
     await connect()
-    app.listen(config.port, () => {
-      console.log(`Server running on http://localhost:${config.port}/api`)
-    })
+    // app.listen(config.port, () => {
+    //   console.log(`Server running on http://localhost:${config.port}/api`)
+    // })
+    app.listen(config.port)
   } catch (e) {
     console.error(e)
   }
